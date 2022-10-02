@@ -29,7 +29,8 @@ Options +FollowSymlinks
 AddDefaultCharset utf-8
 
 RewriteEngine On
-RewriteRule ^$ /public [L]
+RewriteCond %{REQUEST_URI} !^/public
+RewriteRule ^(.*)$ /public/$1 [NC,L]
 
 <IfModule mod_headers.c>
     <FilesMatch "\.(jpe?g|png)$">
@@ -79,18 +80,18 @@ RewriteRule /\.|^\.(?!well-known/) - [F,L]
 # ASSETS: check if request method is GET (because of WebDAV) and if the requested file (asset) exists on the filesystem, if both match, deliver the asset directly
 RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)
 RewriteCond %{DOCUMENT_ROOT}/var/assets%{REQUEST_URI} -f
-RewriteRule ^(.*)$ /public/var/assets%{REQUEST_URI} [PT,L]
+RewriteRule ^(.*)$ /var/assets%{REQUEST_URI} [PT,L]
 
 # Thumbnails
 RewriteCond %{REQUEST_URI} .*/(image|video)-thumb__[\d]+__.*
 RewriteCond %{DOCUMENT_ROOT}/var/tmp/thumbnails%{REQUEST_URI} -f
-RewriteRule ^(.*)$ /public/var/tmp/thumbnails%{REQUEST_URI} [PT,L]
+RewriteRule ^(.*)$ /var/tmp/thumbnails%{REQUEST_URI} [PT,L]
 
 # static pages
 RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)
 RewriteCond %{QUERY_STRING}   !(pimcore_editmode=true|pimcore_preview|pimcore_version)
 RewriteCond %{DOCUMENT_ROOT}/var/tmp/pages%{REQUEST_URI}.html -f
-RewriteRule ^(.*)$ /public/var/tmp/pages%{REQUEST_URI}.html [PT,L]
+RewriteRule ^(.*)$ /var/tmp/pages%{REQUEST_URI}.html [PT,L]
 
 # cache-buster rule for scripts & stylesheets embedded using view helpers
 RewriteRule ^cache-buster\-[\d]+/(.*) $1 [PT,L]
