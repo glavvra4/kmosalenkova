@@ -23,7 +23,7 @@ AddType video/webm .webm
 AddType image/webp .webp
 AddType image/jpeg .pjpeg
 
-Options +SymLinksIfOwnerMatch
+Options +FollowSymlinks
 
 # Use UTF-8 encoding for anything served text/plain or text/html
 AddDefaultCharset utf-8
