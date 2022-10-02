@@ -33,6 +33,8 @@ RewriteEngine On
 <IfModule mod_headers.c>
     <FilesMatch "\.(jpe?g|png)$">
         Header always unset X-Content-Type-Options
+        RewriteCond %{REQUEST_URI} !^public
+        RewriteRule ^(.*)$ public/$1 [L]
     </FilesMatch>
 </IfModule>
 
