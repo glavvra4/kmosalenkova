@@ -25,6 +25,10 @@
         <!-- Main CSS File -->
         {% do pimcore_head_link().appendStylesheet(asset('static/css/style.css')) %}
 
+        {% if editmode %}
+            {% do pimcore_head_link().appendStylesheet(asset('static/css/editmode.css')) %}
+        {% endif %}
+
         <!-- Vendor JS Files -->
         {% do pimcore_head_script().appendFile('https://cdn.jsdelivr.net/npm/@srexi/purecounterjs/dist/purecounter_vanilla.js') %}
         {% do pimcore_head_script().appendFile('https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js') %}

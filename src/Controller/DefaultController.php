@@ -14,6 +14,12 @@ class DefaultController extends FrontendController
      */
     public function defaultAction(Request $request): Response
     {
+        $linkHelper = $this->view->getHelper("HeadLink");
+        $linkHelper->setCacheBuster(false);
+
+        $scriptHelper = $this->view->getHelper("HeadScript");
+        $scriptHelper->setCacheBuster(false);
+
         return $this->render('default/default.html.twig');
     }
 }
