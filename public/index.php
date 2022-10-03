@@ -29,6 +29,7 @@ Tool::setCurrentRequest($request);
 
 /** @var \Pimcore\Kernel $kernel */
 $kernel = \Pimcore\Bootstrap::kernel();
+\Pimcore\Cache::disable();
 
 // reset current request - will be read from request stack from now on
 Tool::setCurrentRequest(null);
