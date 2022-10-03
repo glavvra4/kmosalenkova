@@ -23,10 +23,10 @@
         {% do pimcore_head_link().appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.2/swiper-bundle.min.css') %}
 
         <!-- Main CSS File -->
-        {% do pimcore_head_link().appendStylesheet(asset('static/css/style.css')) %}
+        {% do pimcore_head_link().appendStylesheet(pimcore_asset_by_path('static/css/style.css')) %}
 
         {% if editmode %}
-            {% do pimcore_head_link().appendStylesheet(asset('static/css/editmode.css')) %}
+            {% do pimcore_head_link().appendStylesheet(pimcore_asset_by_path('static/css/editmode.css')) %}
         {% endif %}
 
         <!-- Vendor JS Files -->
@@ -39,7 +39,7 @@
         {% do pimcore_head_script().appendFile('https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js') %}
 
         <!-- Main JS File -->
-        {% do pimcore_head_script().appendFile(asset('static/js/main.js')) %}
+        {% do pimcore_head_script().appendFile(pimcore_asset_by_path('/js/main.js')) %}
 
         {% if not document is defined or not document %}
             {% set document = pimcore_document(1) %}
