@@ -22,7 +22,7 @@
         {% do pimcore_head_link().appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.2.0/css/glightbox.min.css') %}
         {% do pimcore_head_link().appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.2/swiper-bundle.min.css') %}
 
-        <!-- Template Main CSS File -->
+        <!-- Main CSS File -->
         {% do pimcore_head_link().appendStylesheet(asset('static/css/style.css')) %}
 
         <!-- Vendor JS Files -->
@@ -70,6 +70,10 @@
             <link rel="canonical" href="{{ pimcore_placeholder('canonical') }}"/>
         {% endif %}
 
+    {% endblock %}
+
+    {% block head_stylesheets deferred %}
+    {{ pimcore_head_link() }}
     {% endblock %}
 </head>
 
