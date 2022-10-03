@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>{% block title %}My Application{% endblock %}</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    {% apply spaceless %}
+
+        <!-- Google Fonts -->
+        {% do pimcore_head_link().appendStylesheet('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i') %}
+
+        <!-- Vendor CSS Files -->
+        {% do pimcore_head_link().appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css') %}
+        {% do pimcore_head_link().appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.1/css/bootstrap.min.css') %}
+        {% do pimcore_head_link().appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css') %}
+        {% do pimcore_head_link().appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css') %}
+        {% do pimcore_head_link().appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.2.0/css/glightbox.min.css') %}
+        {% do pimcore_head_link().appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.2/swiper-bundle.min.css') %}
+
+        <!-- Template Main CSS File -->
+        {% do pimcore_head_link().appendStylesheet(asset('static/css/main.css')) %}
+
+        <!-- Vendor JS Files -->
+        {% do pimcore_head_script().appendFile('https://cdn.jsdelivr.net/npm/@srexi/purecounterjs/dist/purecounter_vanilla.js') %}
+        {% do pimcore_head_script().appendFile('https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js') %}
+        {% do pimcore_head_script().appendFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.1/css/bootstrap.bundle.min.js') %}
+        {% do pimcore_head_script().appendFile('https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.2.0/css/glightbox.min.js') %}
+        {% do pimcore_head_script().appendFile('https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js') %}
+        {% do pimcore_head_script().appendFile('https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.2/swiper-bundle.min.js') %}
+        {% do pimcore_head_script().appendFile('https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js') %}
+
+        <!-- Main JS File -->
+        {% do pimcore_head_script().appendFile(asset('static/js/main.js')) %}
+
+        {% if not document is defined or not document %}
+            {% set document = pimcore_document(1) %}
+        {% endif %}
+
+        {% if document is instanceof('\\Pimcore\\Model\\Document\\Link') %}
+            {# @var document \Pimcore\Model\Document\Link #}
+            {% set document = document.getObject() %}
+        {% endif %}
+
+        {% if document is instanceof('\\Pimcore\\Model\\Document\\Page') %}
+            {% if document.getTitle() is not empty %}
+                {% do pimcore_head_title().set(document.getTitle()) %}
+            {% endif %}
+
+            {% if document.getDescription() is not empty %}
+                {% do pimcore_head_meta().setDescription(document.getDescription()) %}
+            {% endif %}
+
+            {% do pimcore_head_title().append('Undefined page') %}
+            {% do pimcore_head_title().setSeparator(' : ') %}
+        {% endif %}
+
+        {% set isPortal = ((isPortal is defined) and isPortal) %}
+    {% endapply %}
+
+    {% block layout_head_meta deferred %}
+        {{ pimcore_head_title() }}
+        {{ pimcore_head_meta() }}
+
+        {% if pimcore_placeholder('canonical').count() %}
+            <link rel="canonical" href="{{ pimcore_placeholder('canonical') }}"/>
+        {% endif %}
+
+    {% endblock %}
+</head>
+
+<body>
+    {# get root node if there is no document defined (for pages which are routed directly through static route) #}
+    {% if not document is defined or not document %}
+        {% set document = pimcore_document(1) %}
+    {% endif %}
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        {# get the document which should be used to start in navigation | default home #}
+        {% set navStartNode = document.getProperty('navigation_root') %}
+
+        {% if not navStartNode is instanceof('\\Pimcore\\Model\\Document') %}
+            {% set navStartNode = pimcore_document(1) %}
+        {% endif %}
+
+        {% set mainNavigation =  app_navigation_data_links(document, navStartNode) %}
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+
+            <h1 class="logo me-auto me-lg-0"><a href="{{ navStartNode }}">Екатерина</a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="/" class="logo"><img src="/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                {{
+                    pimcore_render_nav(mainNavigation, 'menu', 'renderMenu', {
+                        maxDepth: 1,
+                    })
+                }}
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+            <div class="header-social-links">
+            </div>
+
+        </div>
+
+    </header><!-- End Header -->
+
+    {% block main %}
+    {% endblock %}
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    {# output scripts added before #}
+    {% block headscripts deferred %}
+    {{ pimcore_head_script() }}
+    {% endblock %}
+
+
+    {% block inlinescripts deferred %}
+    {{ pimcore_inline_script() }}
+    {% endblock %}
+</body>
+
+</html>
